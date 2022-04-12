@@ -8,7 +8,7 @@ A felhasználók adatainak tárolására használjuk.
 |Id|Varchar2(32)|Not Null|Elsődleges Kulcs|A felhasználó egyedi azonosítója (neptun kód)|
 |Mail|Varchar2(50)|Not Null||A felhasználó e-mail címe|
 |Password|Varchar2(32)|Not Null||A felhasználó jelszavának a hash-e|
-|UserName|Varchar2(70)|Not Null||A felhasználó neve|
+|Name|Varchar2(70)|Not Null||A felhasználó neve|
 
 **Events:**
 
@@ -54,11 +54,19 @@ A felhasználók meglátogatott eseményei, és az azon elért eredményei
 
 ## Tárolt eljárások:
 registerToEvent(userID,eventID) -regisztrálja a felhasználót az eseményre
+
 login(userID, password) - bejelentkezteti a felhasználót 
+
 unRegister(userID,eventID) - törli a felhasználó regisztrációját
+
 listEvents(dateFrom, dateTo) - listázza az eseményeket (opcionális paraméterek, időpontok közötti versenyekt ad vissza)
+
 eventDetails(evetnID) - esemény adatait adja vissza
+
 registerVisit(userID,eventID,place) - elmenti a felhasználó eredményét egy adott eseményen
+
 userDetails(userID) - felhasználó adatainak lekérdezése
+
 userPasswordChange(userID, password) - elfelejtett jelszó esetén jelszó csere
+
 userDataChange(userID, name,mail) -felhasználó adatainak változtatása
