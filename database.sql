@@ -1,0 +1,44 @@
+CREATE DATABASE IF NOT EXISTS sprot_event_orgainzer_db
+use sprot_event_orgainzer_db
+
+CREATE TABLE IF NOT EXISTS UserTable(
+   id VARCHAR(6) PRIMARY KEY,
+   mail VARCHAR(50) NOT NULL,
+   userPassword VARCHAR(32) NOT NULL,
+   userName VARCHAR(50) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Categories(
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   name VARCHAR(50) NOT NULL
+);
+CREATE TABLE IF NOT EXISTS Events(
+   id INT AUTO_INCREMENT PRIMARY KEY,
+   title VARCHAR(50) NOT NULL,
+   startTime TIMESTAMP NOT NULL,
+   regTime TIMESTAMP NOT NULL,
+   category INT NOT NULL,
+   FOREIGN KEY (category)
+        REFERENCES Categories (id)
+        ON UPDATE RESTRICT ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS UserRegisters(
+   userId  VARCHAR(6) NOT NULL,
+   eventId INT NOT NULL,
+   FOREIGN KEY (userId)
+        REFERENCES UserTable (id)
+        ON UPDATE RESTRICT ON DELETE CASCADE,
+    FOREIGN KEY (eventId)
+        REFERENCES Events (id)
+        ON UPDATE RESTRICT ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS UserVisit(
+   userId  VARCHAR(6) NOT NULL,
+   eventId INT NOT NULL,
+   place INT,
+   FOREIGN KEY (userId)
+        REFERENCES UserTable (id)
+        ON UPDATE RESTRICT ON DELETE CASCADE,
+    FOREIGN KEY (eventId)
+        REFERENCES Events (id)
+        ON UPDATE RESTRICT ON DELETE CASCADE
+);
