@@ -1,14 +1,14 @@
 ## Adatbázisterv:
-**User:**
+**UserTable:**
 
 A felhasználók adatainak tárolására használjuk.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
 |:-------|:-----|:--------|:-------|:------|
-|Id|Varchar2(32)|Not Null|Elsődleges Kulcs|A felhasználó egyedi azonosítója (neptun kód)|
-|Mail|Varchar2(50)|Not Null||A felhasználó e-mail címe|
-|Password|Varchar2(32)|Not Null||A felhasználó jelszavának a hash-e|
-|Name|Varchar2(70)|Not Null||A felhasználó neve|
+|id|VARCHAR(6)|Not Null|Elsődleges Kulcs|A felhasználó egyedi azonosítója (neptun kód)|
+|mail|VARCHAR(50)|Not Null||A felhasználó e-mail címe|
+|userPassword|VARCHAR(32)|Not Null||A felhasználó jelszavának a hash-e|
+|userName|VARCHAR(70)|Not Null||A felhasználó neve|
 
 **Events:**
 
@@ -16,11 +16,11 @@ A sportesemények adatinak tárolására használjuk.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
 |:-------|:-----|:--------|:-------|:------|
-|Id|Numeric|Not Null|Elsődleges Kulcs|Az esemény egyedi azonosítója|
-|Title|Varchar2(50)|Not Null||Az esemény neve|
-|StartTime|Timestamp|Not Null||Az esemény időpontja|
-|RegTime|TimeStamp|Not Null||Eddig az időpontig lehet jelentkezni|
-|Category|Numeric|Not NuLL|Idegen kulcs (A Categories tábla Id mezőjéhez kapcsolva)|Az esemény kategóriája|
+|id|INT|Not Null|Elsődleges Kulcs|Az esemény egyedi azonosítója|
+|title|VARCHAR(50)|Not Null||Az esemény neve|
+|startTime|TIMESTAMP|Not Null||Az esemény időpontja|
+|regTime|TIMESTAMP|Not Null||Eddig az időpontig lehet jelentkezni|
+|category|INT|Not NuLL|Idegen kulcs (A Categories tábla Id mezőjéhez kapcsolva)|Az esemény kategóriája|
 
 **Categories:**
 
@@ -28,8 +28,8 @@ A sportesemények kategórái.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
 |:-------|:-----|:--------|:-------|:------|
-|Id|Numeric|Not Null|Elsődleges Kulcs|A kategória egyedi azonosítója|
-|Name|Varchar2(50)|Not Null||A kategória neve|
+|id|INT|Not Null|Elsődleges Kulcs|A kategória egyedi azonosítója|
+|name|VARCHAR(50)|Not Null||A kategória neve|
 
 
 **UserRegisters:**
@@ -38,8 +38,8 @@ Felhasználók jelentkezései az eseményekre.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
 |:-------|:-----|:--------|:-------|:------|
-|userId|Varchar2(32)|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|A felhasználó egyedi azonosítója (neptun kód)|
-|eventId|Numeric|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|Az esemény egyedi azonosítója|
+|userId|VARCHAR(6)|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|A felhasználó egyedi azonosítója (neptun kód)|
+|eventId|INT|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|Az esemény egyedi azonosítója|
 
 **UserVisit:**
 
@@ -47,9 +47,9 @@ A felhasználók meglátogatott eseményei, és az azon elért eredményei
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
 |:-------|:-----|:--------|:-------|:------|
-|userId|Varchar2(32)|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|A felhasználó egyedi azonosítója (neptun kód)|
-|eventId|Numeric|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|Az esemény egyedi azonosítója|
-|Place|Numeric|||A felhasználó által, az eseményen elért eredmény|
+|userId|VARCHAR(6)|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|A felhasználó egyedi azonosítója (neptun kód)|
+|eventId|INT|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|Az esemény egyedi azonosítója|
+|p lace|INT|||A felhasználó által, az eseményen elért eredmény|
 
 
 ## Tárolt eljárások:
