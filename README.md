@@ -1,6 +1,5 @@
 ## Adatbázisterv:
 **UserTable:**
-
 A felhasználók adatainak tárolására használjuk.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
@@ -11,8 +10,9 @@ A felhasználók adatainak tárolására használjuk.
 |userPassword|VARCHAR(32)|Not Null||A felhasználó jelszavának a hash-e|
 |userName|VARCHAR(70)|Not Null||A felhasználó neve|
 
-**Events:**
+---
 
+**Events:**
 A sportesemények adatinak tárolására használjuk.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
@@ -23,8 +23,9 @@ A sportesemények adatinak tárolására használjuk.
 |regTime|DATETIME|Not Null||Eddig az időpontig lehet jelentkezni|
 |category|INT|Not NuLL|Idegen kulcs (A Categories tábla Id mezőjéhez kapcsolva)|Az esemény kategóriája|
 
-**Categories:**
+---
 
+**Categories:**
 A sportesemények kategórái.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
@@ -32,9 +33,9 @@ A sportesemények kategórái.
 |id|INT|Not Null|Elsődleges Kulcs|A kategória egyedi azonosítója|
 |name|VARCHAR(50)|Not Null||A kategória neve|
 
+---
 
 **UserRegisters:**
-
 Felhasználók jelentkezései az eseményekre.
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
@@ -42,8 +43,9 @@ Felhasználók jelentkezései az eseményekre.
 |userId|VARCHAR(6)|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|A felhasználó egyedi azonosítója (neptun kód)|
 |eventId|INT|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|Az esemény egyedi azonosítója|
 
-**UserVisit:**
+---
 
+**UserVisit:**
 A felhasználók meglátogatott eseményei, és az azon elért eredményei
 
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
@@ -52,11 +54,14 @@ A felhasználók meglátogatott eseményei, és az azon elért eredményei
 |eventId|INT|Not Null|Idegen kulcs (Events tábla Id mezőjéhez kapcsolva)|Az esemény egyedi azonosítója|
 |p lace|INT|||A felhasználó által, az eseményen elért eredmény|
 
+---
+---
 
 ## Tárolt eljárások:
+Minden függvény JSON objektummal, vagy JSON objektumok listájával tér vissza. Ez alól csak a userLogin függvény a kivétel!
 Az adabázis a következő tárolt eljárásokat tartalmazza:
 
-* registerUser:
+* **registerUser:**
     Új felhasználó felvitele a rendszerbe.
 
     Bemenő adatok:
@@ -69,7 +74,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |userName|VARCHAR(70)|A felhasználó neve|
     |level|INT|A felhasználó szintje, 0-diák, 1-tanár|
 
-* addEvent  
+---
+
+* **addEvent:**  
     Esemény létrehozása.
 
     Bemenő adatok:
@@ -81,7 +88,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |regTime|DATETIME|Az az időpont ameddig lehet rá regisztrálni|
     |category|INT|Az esemény kategóriájának azonosítója|
 
-* addCategory  
+---
+
+* **addCategory:**  
     Kategóris létrehozása.
 
     Bemenő adatok:
@@ -89,8 +98,10 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |Változó:|Típus:|Leírás:|
     |:-----|:-----------|:------|
     |name|VARCHAR(50)|A kategória neve|
-   
-* registerToEvent  
+ 
+---
+  
+* **registerToEvent:**  
     Felhasználó előzetes regisztrációja egy eseményhez.
 
     Bemenő adatok:
@@ -100,7 +111,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |userId|VARCHAR(6)|A regisztrálandó felhasználó azonosítója|
     |eventId|INT|Az esemény azonoítója|
 
-* unRegister  
+---
+
+* **unRegister:**  
     Felhasználó előzetes regisztrációjánap törlése egy eseményről.
 
     Bemenő adatok:
@@ -110,7 +123,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |userId|VARCHAR(6)|A regisztrálandó felhasználó azonosítója|
     |eventId|INT|Az esemény azonoítója|
     
-* registerVisit  
+---
+
+* **registerVisit:**  
     Felhasználó részvételének regisztrációja egy eseményre.
 
     Bemenő adatok:
@@ -121,7 +136,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |eventId|INT|Az esemény azonoítója|
     |place|INT|A felhasználó által elért eredmény|
 
-* userDataChange  
+---
+
+* **userDataChange:**  
     Felhasználó adatainak módosítása.
 
     Bemenő adatok:
@@ -134,7 +151,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |userName|VARCHAR(70)|A felhasználó neve|
     |level|INT|A felhasználó szintje, 0-diák, 1-tanár|
 
-* userDetails  
+---
+
+* **userDetails:**  
     Egy felhasználó adatainak lekérdezése.
 
     Bemenő adatok:
@@ -152,7 +171,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |mail|A felhasználó email címe|
     |level|A felhasználó szintje, 0-diák, 1-tanár|
 
-* eventDetails  
+---
+
+* **eventDetails:**  
     Egy esemény adatainak lekérdezése.
 
     Bemenő adatok:
@@ -171,7 +192,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |regTime|Az az időpont ameddig lehet rá regisztrálni|
     |category|Az esemény kategóriájának azonosítója|
 
-* listEvents  
+---
+
+* **listEvents:**
     Események listájának lekérdezése (Listát ad vissza az eseményekről).
 
     Bemenő adatok:
@@ -191,7 +214,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |regTime|Az az időpont ameddig lehet rá regisztrálni|
     |category|Az esemény kategóriájának azonosítója|
 
-* listEvents  
+---
+
+* **listEvents:**  
     Kategóriák listájának lekérdezése (Listát ad vissza az eseményekről).
 
     Bemenő adatok:
@@ -206,7 +231,9 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |id|Az kategória egyedi azonosítója|
     |name|Az kategória elnevezése|
     
-* listUsers  
+---
+
+* **listUsers:**  
     Felhasználók listájának lekérdezése (Listát ad vissza az eseményekről).
 
     Bemenő adatok:
@@ -223,9 +250,11 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |mail|A felhasználó email címe|
     |level|A felhasználó szintje, 0-diák, 1-tanár|
 
-* userLogin  
+---
+
+* **userLogin:** 
     Felhasználók azonosítása. Ez az egyetlen függvény meg nem JSON-t ad vissza hanem egyszerű bool értéket.
-    
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
