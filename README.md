@@ -6,6 +6,7 @@ A felhasználók adatainak tárolására használjuk.
 |Mezőnév:|Típus:|Megkötés:|Kulcs-e:|Leírás:|
 |:-------|:-----|:--------|:-------|:------|
 |id|VARCHAR(6)|Not Null|Elsődleges Kulcs|A felhasználó egyedi azonosítója (neptun kód)|
+|level|INT|Not Null||A felhasználó szintje, 0-diák, 1-tanár|
 |mail|VARCHAR(50)|Not Null||A felhasználó e-mail címe|
 |userPassword|VARCHAR(32)|Not Null||A felhasználó jelszavának a hash-e|
 |userName|VARCHAR(70)|Not Null||A felhasználó neve|
@@ -18,8 +19,8 @@ A sportesemények adatinak tárolására használjuk.
 |:-------|:-----|:--------|:-------|:------|
 |id|INT|Not Null|Elsődleges Kulcs|Az esemény egyedi azonosítója|
 |title|VARCHAR(50)|Not Null||Az esemény neve|
-|startTime|TIMESTAMP|Not Null||Az esemény időpontja|
-|regTime|TIMESTAMP|Not Null||Eddig az időpontig lehet jelentkezni|
+|startTime|DATETIME|Not Null||Az esemény időpontja|
+|regTime|DATETIME|Not Null||Eddig az időpontig lehet jelentkezni|
 |category|INT|Not NuLL|Idegen kulcs (A Categories tábla Id mezőjéhez kapcsolva)|Az esemény kategóriája|
 
 **Categories:**
@@ -53,20 +54,174 @@ A felhasználók meglátogatott eseményei, és az azon elért eredményei
 
 
 ## Tárolt eljárások:
-registerToEvent(userID,eventID) -regisztrálja a felhasználót az eseményre
+Az adabázis a következő tárolt eljárásokat tartalmazza:
 
-login(userID, password) - bejelentkezteti a felhasználót 
+* registerUser:
+    Új felhasználó felvitele a rendszerbe.
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A felhasználó egyedi azonosítója. (neptun kód)|
+    |mail|VARCHAR(50)|A felhasználó email címe|
+    |userPass|VARCHAR(32)|A felhasználó jelszavának hash értéke|
+    |userName|VARCHAR(70)|A felhasználó neve|
+    |level|INT|A felhasználó szintje, 0-diák, 1-tanár|
 
-unRegister(userID,eventID) - törli a felhasználó regisztrációját
+* addEvent  
+    Esemény létrehozása.
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |title|VARCHAR(50)|Az esemény neve|
+    |startTime|DATETIME|Az esemény kezdő időpontja|
+    |regTime|DATETIME|Az az időpont ameddig lehet rá regisztrálni|
+    |category|INT|Az esemény kategóriájának azonosítója|
 
-listEvents(dateFrom, dateTo) - listázza az eseményeket (opcionális paraméterek, időpontok közötti versenyekt ad vissza)
+* addCategory  
+    Kategóris létrehozása.
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |name|VARCHAR(50)|A kategória neve|
+   
+* registerToEvent  
+    Felhasználó előzetes regisztrációja egy eseményhez
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A regisztrálandó felhasználó azonosítója|
+    |eventId|INT|Az esemény azonoítója|
 
-eventDetails(evetnID) - esemény adatait adja vissza
+* unRegister  
+    Felhasználó előzetes regisztrációjánap törlése egy eseményről
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A regisztrálandó felhasználó azonosítója|
+    |eventId|INT|Az esemény azonoítója|
+    
+* registerVisit  
+    Felhasználó részvételének regisztrációja egy eseményre
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A regisztrálandó felhasználó azonosítója|
+    |eventId|INT|Az esemény azonoítója|
+    |place|INT|A felhasználó által elért eredmény|
 
-registerVisit(userID,eventID,place) - elmenti a felhasználó eredményét egy adott eseményen
+* userDataChange  
+    Felhasználó adatainak módosítása
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A felhasználó egyedi azonosítója. (neptun kód)|
+    |mail|VARCHAR(50)|A felhasználó email címe|
+    |userPass|VARCHAR(32)|A felhasználó jelszavának hash értéke|
+    |userName|VARCHAR(70)|A felhasználó neve|
+    |level|INT|A felhasználó szintje, 0-diák, 1-tanár|
 
-userDetails(userID) - felhasználó adatainak lekérdezése
+* userDetails  
+    Egy felhasználó adatainak lekérdezése
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A felhasználó egyedi azonosítója. (neptun kód)|
+    
+    Visszatérési érték:
+    
+    |Kulcs:|Leírás|
+    |:-----|:------|
+    |id|A felhasználó egyedi azonosítója|
+    |name|A felhasználó neve|
+    |mail|A felhasználó email címe|
+    |level|A felhasználó szintje, 0-diák, 1-tanár|
 
-userPasswordChange(userID, password) - elfelejtett jelszó esetén jelszó csere
+* eventDetails  
+    Egy esemény adatainak lekérdezése
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |eventId|INT|Az esemény egyedi azonosítója.|
+    
+    Visszatérési érték:
+    
+    |Kulcs:|Leírás|
+    |:-----|:------|
+    |id|Az esemény egyedi azonosítója|
+    |title|Az esemény elnevezése|
+    |startTime|Az esemény kezdő időpontja|
+    |regTime|Az az időpont ameddig lehet rá regisztrálni|
+    |category|Az esemény kategóriájának azonosítója|
 
-userDataChange(userID, name,mail) -felhasználó adatainak változtatása
+* listEvents  
+    Események listájának lekérdezése (Listát ad vissza az eseményekről)
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |timeFrom|DATETIME|Ettől az időponttól fog listázni (lehet NULL)|
+    |timeTo|DATETIME|Eddig az időpontig fog listázni (lehet NULL)|
+    
+    Visszatérési érték:
+    
+    |Kulcs:|Leírás|
+    |:-----|:------|
+    |id|Az esemény egyedi azonosítója|
+    |title|Az esemény elnevezése|
+    |startTime|Az esemény kezdő időpontja|
+    |regTime|Az az időpont ameddig lehet rá regisztrálni|
+    |category|Az esemény kategóriájának azonosítója|
+
+* listEvents  
+    Kategóriák listájának lekérdezése (Listát ad vissza az eseményekről)
+    Bemenő adatok:
+    
+    Nincs
+    
+    
+    Visszatérési érték:
+    
+    |Kulcs:|Leírás|
+    |:-----|:------|
+    |id|Az kategória egyedi azonosítója|
+    |name|Az kategória elnevezése|
+    
+* listUsers  
+    Felhasználók listájának lekérdezése (Listát ad vissza az eseményekről)
+    Bemenő adatok:
+    
+    Nincs
+    
+    
+    Visszatérési érték:
+    
+    |Kulcs:|Leírás|
+    |:-----|:------|
+    |id|A felhasználó egyedi azonosítója|
+    |name|A felhasználó neve|
+    |mail|A felhasználó email címe|
+    |level|A felhasználó szintje, 0-diák, 1-tanár|
+
+* userLogin  
+    Felhasználók azonosítása. Ez az egyetlen függvény meg nem JSON-t ad vissza hanem egyszerű bool értéket.
+    Bemenő adatok:
+    
+    |Változó:|Típus:|Leírás:|
+    |:-----|:-----------|:------|
+    |userId|VARCHAR(6)|A felhasználó egyedi azonosítója. (neptun kód)|    
+    |userPass|VARCHAR(32)|A felhasználó jelszavának hash értéke|    
+
+    Visszatérési érték:
+    
+    |Kulcs:|Leírás|
+    |:-----|:------|
+    |-|0 esetén sikertelen az azonosítás 1 esetén sikeres|
