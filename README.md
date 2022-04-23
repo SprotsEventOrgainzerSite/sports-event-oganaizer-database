@@ -58,6 +58,7 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
 
 * registerUser:
     Új felhasználó felvitele a rendszerbe.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -70,6 +71,7 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
 
 * addEvent  
     Esemény létrehozása.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -81,6 +83,7 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
 
 * addCategory  
     Kategóris létrehozása.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -88,7 +91,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |name|VARCHAR(50)|A kategória neve|
    
 * registerToEvent  
-    Felhasználó előzetes regisztrációja egy eseményhez
+    Felhasználó előzetes regisztrációja egy eseményhez.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -97,7 +101,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |eventId|INT|Az esemény azonoítója|
 
 * unRegister  
-    Felhasználó előzetes regisztrációjánap törlése egy eseményről
+    Felhasználó előzetes regisztrációjánap törlése egy eseményről.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -106,7 +111,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |eventId|INT|Az esemény azonoítója|
     
 * registerVisit  
-    Felhasználó részvételének regisztrációja egy eseményre
+    Felhasználó részvételének regisztrációja egy eseményre.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -116,7 +122,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |place|INT|A felhasználó által elért eredmény|
 
 * userDataChange  
-    Felhasználó adatainak módosítása
+    Felhasználó adatainak módosítása.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -128,7 +135,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |level|INT|A felhasználó szintje, 0-diák, 1-tanár|
 
 * userDetails  
-    Egy felhasználó adatainak lekérdezése
+    Egy felhasználó adatainak lekérdezése.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -145,7 +153,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |level|A felhasználó szintje, 0-diák, 1-tanár|
 
 * eventDetails  
-    Egy esemény adatainak lekérdezése
+    Egy esemény adatainak lekérdezése.
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -163,7 +172,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |category|Az esemény kategóriájának azonosítója|
 
 * listEvents  
-    Események listájának lekérdezése (Listát ad vissza az eseményekről)
+    Események listájának lekérdezése (Listát ad vissza az eseményekről).
+
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
@@ -182,7 +192,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |category|Az esemény kategóriájának azonosítója|
 
 * listEvents  
-    Kategóriák listájának lekérdezése (Listát ad vissza az eseményekről)
+    Kategóriák listájának lekérdezése (Listát ad vissza az eseményekről).
+
     Bemenő adatok:
     
     Nincs
@@ -196,7 +207,8 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
     |name|Az kategória elnevezése|
     
 * listUsers  
-    Felhasználók listájának lekérdezése (Listát ad vissza az eseményekről)
+    Felhasználók listájának lekérdezése (Listát ad vissza az eseményekről).
+
     Bemenő adatok:
     
     Nincs
@@ -213,6 +225,7 @@ Az adabázis a következő tárolt eljárásokat tartalmazza:
 
 * userLogin  
     Felhasználók azonosítása. Ez az egyetlen függvény meg nem JSON-t ad vissza hanem egyszerű bool értéket.
+    
     Bemenő adatok:
     
     |Változó:|Típus:|Leírás:|
