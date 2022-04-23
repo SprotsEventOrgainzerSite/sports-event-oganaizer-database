@@ -78,5 +78,5 @@ END |
 
 CREATE OR REPLACE PROCEDURE userDataChange(IN userId VARCHAR(6), mail VARCHAR(50), userPass VARCHAR(32), userName VARCHAR(70), level INT) 
 BEGIN
-    UPDATE UserTable  set UserTable.id = userId,UserTable.level = level, UserTable.mail = mail, UserTable.userpassword = userPass, UserTable.userName = userName;
+    UPDATE UserTable  set UserTable.id = userId,UserTable.level = level, UserTable.mail = mail, UserTable.userpassword = userPass, UserTable.userName = userName WHERE UserTable.id = userId ;
 END 
