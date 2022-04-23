@@ -1,8 +1,9 @@
-CREATE DATABASE IF NOT EXISTS sprot_event_orgainzer_db
-use sprot_event_orgainzer_db
+CREATE DATABASE IF NOT EXISTS sprot_event_orgainzer_db;
+USE sprot_event_orgainzer_db;
 
 CREATE TABLE IF NOT EXISTS UserTable(
    id VARCHAR(6) PRIMARY KEY,
+   level INT NOT NULL,
    mail VARCHAR(50) NOT NULL,
    userPassword VARCHAR(32) NOT NULL,
    userName VARCHAR(50) NOT NULL
@@ -14,8 +15,8 @@ CREATE TABLE IF NOT EXISTS Categories(
 CREATE TABLE IF NOT EXISTS Events(
    id INT AUTO_INCREMENT PRIMARY KEY,
    title VARCHAR(50) NOT NULL,
-   startTime TIMESTAMP NOT NULL,
-   regTime TIMESTAMP NOT NULL,
+   startTime DATETIME NOT NULL,
+   regTime DATETIME NOT NULL,
    category INT NOT NULL,
    FOREIGN KEY (category)
         REFERENCES Categories (id)

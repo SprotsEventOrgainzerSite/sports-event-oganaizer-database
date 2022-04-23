@@ -1,73 +1,82 @@
-DROP FUNCTION IF EXISTS login;
-CREATE FUNCTION login (userId VARCHAR(6), userPass VARCHAR(32)) RETURNS BOOLEAN
+DELIMITER |
+USE sprot_event_orgainzer_db |
+
+CREATE OR REPLACE FUNCTION userLogin(userId VARCHAR(6), userPass VARCHAR(32)) RETURNS BOOLEAN
 BEGIN
     DECLARE loggedCount INT;
     SELECT count(userName) into loggedCount FROM UserTable WHERE  id = userId AND userPassword = userPass;
     return loggedCount = 1;
-END
+END | 
 
-DROP FUNCTION IF EXISTS listUsers;
-CREATE FUNCTION listUsers() RETURNS JSON
+CREATE OR REPLACE FUNCTION listUsers() RETURNS JSON
 BEGIN
 	DECLARE userList JSON;
-    SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJEcT('id' , id,'Név' , userName)), "]" )  INTO userList from UserTable;
+    SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJEcT('id' , id,'Name' , userName, 'level', level)), "]" )  INTO userList from UserTable;
     RETURN userList;
-END
+END |
 
+CREATE OR REPLACE FUNCTION listCategories() RETURNS JSON
+BEGIN
+	DECLARE categoryList JSON;
+    SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJEcT('id' , id,'Name' , name)), "]" )  INTO categoryList from Categories;
+    RETURN categoryList;
+END |
 
-DROP FUNCTION IF EXISTS listEvents;
-CREATE FUNCTION listEvents(timeFrom TIMESTAMP, timeTo TIMESTAMP) RETURNS JSON
+CREATE OR REPLACE FUNCTION listEvents(timeFrom DATETIME, timeTo DATETIME) RETURNS JSON
 BEGIN
 	DECLARE eventList JSON;
 	SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJECT('id' , id,'title' , title, 'startTime', startTime, 'regTime', regTime, 'category', category) ), "]" ) into eventList from Events
     WHERE (timeFrom is NULL OR timeFrom < startTime)AND(timeTo IS NULL OR timeTo > startTime);
     RETURN eventList;
-END
+END |
 
-DROP FUNCTION IF EXISTS eventDetails;
-CREATE FUNCTION eventDetails(eventid INT) RETURNS JSON
+CREATE OR REPLACE FUNCTION eventDetails(eventid INT) RETURNS JSON
 BEGIN
 	DECLARE eventD JSON;
 	SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJECT('id' , id,'title' , title, 'startTime', startTime, 'regTime', regTime, 'category', category) ), "]" ) into eventD from Events
     WHERE eventiD = id;
     RETURN eventD;
-END
+END |
 
-DROP FUNCTION IF EXISTS userDetails;
-CREATE FUNCTION userDetails(userid INT) RETURNS JSON
+CREATE OR REPLACE FUNCTION userDetails(userid INT) RETURNS JSON
 BEGIN
 	DECLARE userD JSON;
-	SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJECT('id' , id,'Név' , userName, 'mail', mail) ), "]" ) into userD from UserTable
+	SELECT CONCAT("[", GROUP_CONCAT( JSON_OBJECT('id' , id,'Name' , userName, 'mail', mail, 'level', level) ), "]" ) into userD from UserTable
     WHERE userid = id;
     RETURN userD;
-END
+END |
 
-DROP PROCEDURE IF EXISTS registerToEvent;
-CREATE PROCEDURE registerToEvent(IN userId VARCHAR(6), eventId INT) 
+CREATE OR REPLACE PROCEDURE registerToEvent(IN userId VARCHAR(6), eventId INT) 
 BEGIN
     INSERT INTO UserRegisters VALUES (suerID, eventId);
-END
+END |
 
-DROP PROCEDURE IF EXISTS registerUser;
-CREATE PROCEDURE registerUser(IN userId VARCHAR(6), mail VARCHAR(50), userPass VARCHAR(32), userName VARCHAR(70)) 
+CREATE OR REPLACE PROCEDURE registerUser(IN userId VARCHAR(6), mail VARCHAR(50), userPass VARCHAR(32), userName VARCHAR(70), level INT) 
 BEGIN
-    INSERT INTO UserTable VALUES (userId, mail,userPass,userName);
-END
+    INSERT INTO UserTable VALUES (userId, level, mail,userPass,userName);
+END |
 
-DROP PROCEDURE IF EXISTS unRegister;
-CREATE PROCEDURE unRegister(IN userId VARCHAR(6), eventId INT) 
+CREATE OR REPLACE PROCEDURE unRegister(IN userId VARCHAR(6), eventId INT) 
 BEGIN
     DELETE FROM UserRegisters WHERE UserRegisters.userId = userId AND UserRegisters.eventId = eventId;
-END
+END |
 
-DROP PROCEDURE IF EXISTS registerVisit;
-CREATE PROCEDURE registerVisit(IN userId VARCHAR(6), eventId INT, place INT) 
+CREATE OR REPLACE PROCEDURE registerVisit(IN userId VARCHAR(6), eventId INT, place INT) 
 BEGIN
-    INSERT INTO UserVisit VALUES (suerID, eventId,place);
-END
+    INSERT INTO UserVisit VALUES (userId, eventId,place);
+END |
 
-DROP PROCEDURE IF EXISTS userDataChange;
-CREATE PROCEDURE userDataChange(IN userId VARCHAR(6), mail VARCHAR(50), userPass VARCHAR(32), userName VARCHAR(70)) 
+CREATE OR REPLACE PROCEDURE registerEvent(IN title VARCHAR(50), startTime DATETIME, regTime DATETIME, category INT) 
 BEGIN
-    UPDATE UserTable  set UserTable.id = userId, UserTable.mail = mail, UserTable.userpassword = userPass, UserTable.userName = userName);
-END
+    INSERT INTO Events (title, startTime, regTime, category) VALUES (title, startTime, regTime, category);
+END |
+
+CREATE OR REPLACE PROCEDURE addCategory(IN name VARCHAR(50)) 
+BEGIN
+    INSERT INTO Categories (name) VALUES (name);
+END |
+
+CREATE OR REPLACE PROCEDURE userDataChange(IN userId VARCHAR(6), mail VARCHAR(50), userPass VARCHAR(32), userName VARCHAR(70), level INT) 
+BEGIN
+    UPDATE UserTable  set UserTable.id = userId,UserTable.level = level, UserTable.mail = mail, UserTable.userpassword = userPass, UserTable.userName = userName;
+END 
